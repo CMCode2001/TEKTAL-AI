@@ -1,6 +1,5 @@
-import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Brain, ArrowLeft, Briefcase, GraduationCap, BookOpen } from 'lucide-react';
+import { ArrowLeft, Briefcase, GraduationCap, BookOpen } from 'lucide-react';
 import Logo from "../assets/LogoTkT.png"
 
 
@@ -10,7 +9,7 @@ interface ResultsState {
     lastName: string;
   };
   answers: number[];
-  questions: any[];
+  questions: unknown[];
 }
 
 const careerSuggestions = {
