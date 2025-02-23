@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bgCMC {
+  --tw-bg-opacity: 1;
+  /* background: rgb(68,40,1); */
+  background: linear-gradient(0deg, rgb(0, 19, 4) 0%, rgba(0,0,0,1) 100%);
+}
+
