@@ -1,7 +1,6 @@
 % ======= RÈGLES D'INFÉRENCE AVEC GESTION DES EXCEPTIONS =======
 
-% 1. ÉVALUATION DE LA COMPATIBILITÉ MÉTIER/PROFIL
-% Règle principale de compatibilité qui génère un score global
+% 1. ÉVALUATION DE LA COMPATIBILITÉ MÉTIER/PROFIL AVEC GESTION DES EXCEPTIONS
 compatible_avec_metier(Personne, Metier, Score, Details) :-
     % Vérification du niveau d'études
     (niveau_etude(Personne, NiveauEtude) ->
@@ -16,15 +15,18 @@ compatible_avec_metier(Personne, Metier, Score, Details) :-
     ),
     format('~n=== Évaluation de la compatibilité pour ~w ===~n', [Metier]),
     format('Niveau d\'études actuel: ~w (Requis: ~w)~n', [NiveauEtude, NiveauRequisEtude]),
+    format('Vérification des compétences et des intérêts...~n', []),
 
     % Calcul des différents scores
     (calcul_score_niveau_etude(NiveauEtude, NiveauRequisEtude, ScoreEtude) ->
+        format('Calcul du score basé sur le niveau d\'études...~n', []),
         format('Score niveau d\'études: ~w/100~n', [ScoreEtude])
     ;
-        throw(error(calculation_error, 'Erreur dans le calcul du score niveau d\'études'))
+        throw(error(calculation_error, "Erreur dans le calcul du score niveau d\'études"))
     ),
 
     (calcul_score_competences(Personne, Metier, ScoreCompetences, CompDetails) ->
+        format('Calcul du score basé sur les compétences...~n', []),
         format('Score compétences: ~w/100~n', [ScoreCompetences]),
         afficher_details_competences(CompDetails)
     ;
@@ -32,12 +34,14 @@ compatible_avec_metier(Personne, Metier, Score, Details) :-
     ),
 
     (calcul_score_interet(Personne, Metier, ScoreInteret) ->
+        format('Calcul du score basé sur les intérêts...~n', []),
         format('Score intérêt: ~w/100~n', [ScoreInteret])
     ;
         throw(error(calculation_error, 'Erreur dans le calcul du score intérêt'))
     ),
 
     (calcul_score_personnalite(Personne, Metier, ScorePersonnalite) ->
+        format('Calcul du score basé sur la personnalité...~n', []),
         format('Score personnalité: ~w/100~n', [ScorePersonnalite])
     ;
         throw(error(calculation_error, 'Erreur dans le calcul du score personnalité'))
@@ -46,6 +50,7 @@ compatible_avec_metier(Personne, Metier, Score, Details) :-
     % Calcul du score global pondéré
     Score is (ScoreEtude * 0.2 + ScoreCompetences * 0.4 + ScoreInteret * 0.25 + ScorePersonnalite * 0.15),
     format('Score global: ~w/100~n', [Score]),
+    format('Évaluation terminée avec succès.~n', []),
 
     % Compilation des détails pour l'explication
     Details = details(
@@ -118,7 +123,6 @@ calcul_score_personnalite(Personne, Metier, Score) :-
     ).
 
 % 2. RECOMMANDATION DE MÉTIERS
-% Recommande les meilleurs métiers pour un profil donné
 recommander_metiers(Personne, MetiersRecommandes) :-
     format('~n=== Recommandation de métiers pour ~w ===~n', [Personne]),
     (findall(metier_score(Metier, Score, Details), (
@@ -148,7 +152,6 @@ afficher_metiers_recommandes(MetiersRecommandes) :-
         format('  - ~w: Score = ~w/100~n', [Metier, Score])).
 
 % 3. ANALYSE DES ASPIRATIONS PROFESSIONNELLES
-% Évalue la compatibilité avec l'aspiration déclarée
 evaluer_aspiration(Personne, MetierSouhaite, Evaluation) :-
     format('~n=== Évaluation de l\'aspiration pour ~w ===~n', [MetierSouhaite]),
     (compatible_avec_metier(Personne, MetierSouhaite, Score, Details) ->
@@ -180,7 +183,6 @@ evaluer_aspiration(Personne, MetierSouhaite, Evaluation) :-
     ).
 
 % 4. IDENTIFICATION DES MATIÈRES CLÉS
-% Identifie les matières à renforcer pour un métier donné
 matieres_a_renforcer(Personne, Metier, MatieresTriees) :-
     format('~n=== Matières à renforcer pour ~w ===~n', [Metier]),
     % Récupération des compétences requises pour le métier
@@ -212,7 +214,6 @@ afficher_matieres_a_renforcer(MatieresTriees) :-
         format('  - ~w: Niveau actuel = ~w, Niveau requis = ~w, Écart = ~w~n', [Matiere, NiveauActuel, NiveauImportance, Ecart])).
 
 % 5. ÉLABORATION D'UN PLAN DE DÉVELOPPEMENT
-% Génère un plan de développement personnalisé
 generer_plan_developpement(Personne, Metier, Plan) :-
     format('~n=== Plan de développement pour ~w ===~n', [Metier]),
     % Récupération des différentes composantes du plan
