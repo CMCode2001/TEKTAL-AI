@@ -1,4 +1,7 @@
 % ======= DOMAINES ET MÉTIERS =======
+% Définition des domaines professionnels
+:- module(base_de_connaissance, [domaine/1, metier/2]).
+
 domaine(informatique).
 domaine(sante).
 domaine(commerce).
