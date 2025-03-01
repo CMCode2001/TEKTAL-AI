@@ -1,6 +1,7 @@
 % ======= DOMAINES ET MÉTIERS =======
 % Définition des domaines professionnels
 :- module(base_de_connaissance, [domaine/1, metier/2]).
+:- set_prolog_flag(encoding, utf8).
 
 domaine(informatique).
 domaine(sante).
