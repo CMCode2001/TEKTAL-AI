@@ -229,39 +229,39 @@ duree_formation(essec, commerce_international, 2).
 
 % ======= RÈGLES D'INFÉRENCE =======
 % Compatibilité métier/profil
-compatible_avec_metier(Personne, Metier, Score) :-
-    niveau_etude(Personne, NiveauEtude),
-    niveau_etude_requis(Metier, NiveauRequisEtude),
-    NiveauEtude >= NiveauRequisEtude,
-    calcul_score_competences(Personne, Metier, ScoreCompetences),
-    calcul_score_interet(Personne, Metier, ScoreInteret),
-    Score is (ScoreCompetences * 0.7 + ScoreInteret * 0.3).
+% compatible_avec_metier(Personne, Metier, Score) :-
+%     niveau_etude(Personne, NiveauEtude),
+%     niveau_etude_requis(Metier, NiveauRequisEtude),
+%     NiveauEtude >= NiveauRequisEtude,
+%     calcul_score_competences(Personne, Metier, ScoreCompetences),
+%     calcul_score_interet(Personne, Metier, ScoreInteret),
+%     Score is (ScoreCompetences * 0.7 + ScoreInteret * 0.3).
 
-% Calculer le score basé sur les compétences
-calcul_score_competences(Personne, Metier, Score) :-
-    findall(S, (
-        requiert_competence(Comp, Metier, NiveauRequis),
-        niveau_competence(Personne, Comp, NiveauPersonne),
-        S is min(NiveauPersonne / NiveauRequis, 1) * 100
-    ), Scores),
-    sum_list(Scores, Total),
-    length(Scores, N),
-    Score is Total / N.
+% % Calculer le score basé sur les compétences
+% calcul_score_competences(Personne, Metier, Score) :-
+%     findall(S, (
+%         requiert_competence(Comp, Metier, NiveauRequis),
+%         niveau_competence(Personne, Comp, NiveauPersonne),
+%         S is min(NiveauPersonne / NiveauRequis, 1) * 100
+%     ), Scores),
+%     sum_list(Scores, Total),
+%     length(Scores, N),
+%     Score is Total / N.
 
-% Calculer le score basé sur les intérêts
-calcul_score_interet(Personne, Metier, Score) :-
-    metier(Metier, Domaine),
-    interet(Personne, Domaine, NiveauInteret),
-    Score is NiveauInteret * 20.  % Convertir une échelle 1-5 en pourcentage
+% % Calculer le score basé sur les intérêts
+% calcul_score_interet(Personne, Metier, Score) :-
+%     metier(Metier, Domaine),
+%     interet(Personne, Domaine, NiveauInteret),
+%     Score is NiveauInteret * 20.  % Convertir une échelle 1-5 en pourcentage
 
-% Matières à renforcer
-matieres_a_renforcer(Personne, Metier, Matieres) :-
-    findall(matiere(Matiere, NiveauImportance, NiveauActuel), (
-        requiert_competence(Comp, Metier, _),
-        importance_matiere(Matiere, Comp, NiveauImportance),
-        niveau_matiere(Personne, Matiere, NiveauActuel),
-        NiveauActuel < NiveauImportance
-    ), Matieres).
+% % Matières à renforcer
+% matieres_a_renforcer(Personne, Metier, Matieres) :-
+%     findall(matiere(Matiere, NiveauImportance, NiveauActuel), (
+%         requiert_competence(Comp, Metier, _),
+%         importance_matiere(Matiere, Comp, NiveauImportance),
+%         niveau_matiere(Personne, Matiere, NiveauActuel),
+%         NiveauActuel < NiveauImportance
+%     ), Matieres).
 
 % Recommandation d'écoles
 recommander_ecoles(Metier, Ecoles) :-
