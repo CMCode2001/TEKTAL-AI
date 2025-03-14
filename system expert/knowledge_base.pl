@@ -210,4 +210,87 @@ duree_formation(42, developpement_logiciel, 3).
 duree_formation(faculte_medecine_paris, medecine_generale, 10).
 duree_formation(ifsi_lyon, soins_infirmiers, 3).
 duree_formation(hec, management, 2).
+<<<<<<< HEAD
 duree_formation(essec, commerce_international, 2).
+=======
+duree_formation(essec, commerce_international, 2).
+
+
+% ======= RÈGLES D'INFÉRENCE =======
+% Compatibilité métier/profil
+% compatible_avec_metier(Personne, Metier, Score) :-
+%     niveau_etude(Personne, NiveauEtude),
+%     niveau_etude_requis(Metier, NiveauRequisEtude),
+%     NiveauEtude >= NiveauRequisEtude,
+%     calcul_score_competences(Personne, Metier, ScoreCompetences),
+%     calcul_score_interet(Personne, Metier, ScoreInteret),
+%     Score is (ScoreCompetences * 0.7 + ScoreInteret * 0.3).
+
+% % Calculer le score basé sur les compétences
+% calcul_score_competences(Personne, Metier, Score) :-
+%     findall(S, (
+%         requiert_competence(Comp, Metier, NiveauRequis),
+%         niveau_competence(Personne, Comp, NiveauPersonne),
+%         S is min(NiveauPersonne / NiveauRequis, 1) * 100
+%     ), Scores),
+%     sum_list(Scores, Total),
+%     length(Scores, N),
+%     Score is Total / N.
+
+% % Calculer le score basé sur les intérêts
+% calcul_score_interet(Personne, Metier, Score) :-
+%     metier(Metier, Domaine),
+%     interet(Personne, Domaine, NiveauInteret),
+%     Score is NiveauInteret * 20.  % Convertir une échelle 1-5 en pourcentage
+
+% % Matières à renforcer
+% matieres_a_renforcer(Personne, Metier, Matieres) :-
+%     findall(matiere(Matiere, NiveauImportance, NiveauActuel), (
+%         requiert_competence(Comp, Metier, _),
+%         importance_matiere(Matiere, Comp, NiveauImportance),
+%         niveau_matiere(Personne, Matiere, NiveauActuel),
+%         NiveauActuel < NiveauImportance
+%     ), Matieres).
+
+% Recommandation d'écoles
+recommander_ecoles(Metier, Ecoles) :-
+    findall(Ecole, formation_pour_metier(Metier, Ecole, _), Ecoles).
+
+% Plan de développement
+plan_developpement(Personne, Metier, Plan) :-
+    matieres_a_renforcer(Personne, Metier, MatieresARenforcer),
+    niveau_etude(Personne, NiveauEtudeActuel),
+    niveau_etude_requis(Metier, NiveauEtudeRequis),
+    recommander_ecoles(Metier, Ecoles),
+    Plan = plan(
+        metier(Metier),
+        niveau_actuel(NiveauEtudeActuel),
+        niveau_requis(NiveauEtudeRequis),
+        matieres_a_renforcer(MatieresARenforcer),
+        ecoles_recommandees(Ecoles)
+    ).
+
+% ======= EXEMPLES DE PROFILS (à utiliser pour les tests) =======
+% Profil utilisateur (exemple)
+niveau_etude(jean, 3).  % Jean a un niveau licence
+niveau_competence(jean, programmation, 4).
+niveau_competence(jean, communication, 3).
+niveau_competence(jean, mathematiques, 4).
+niveau_matiere(jean, informatique, 4).
+niveau_matiere(jean, mathematiques, 4).
+niveau_matiere(jean, langues_etrangeres, 3).
+interet(jean, informatique, 5).
+interet(jean, ingenierie, 3).
+interet(jean, commerce, 2).
+
+niveau_etude(marie, 4).  % Marie a un niveau master
+niveau_competence(marie, sciences, 5).
+niveau_competence(marie, biologie, 5).
+niveau_competence(marie, communication, 3).
+niveau_matiere(marie, biologie, 5).
+niveau_matiere(marie, chimie, 4).
+niveau_matiere(marie, langues_etrangeres, 3).
+interet(marie, sante, 5).
+interet(marie, sciences_humaines, 4).
+interet(marie, informatique, 2).
+>>>>>>> 08d292a29a47d8bb184689fa5ebf372c9c0c9b69
