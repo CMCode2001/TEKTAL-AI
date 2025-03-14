@@ -23,39 +23,52 @@ const questions: Question[] = [
     id: 1,
     text: "Quel est votre niveau d'études actuel ?",
     options: [
-      { text: "Baccalauréat en cours", emoji: "📚" },
-      { text: "Baccalauréat obtenu", emoji: "🎓" },
-      { text: "Bac+2/3", emoji: "🎯" },
-      { text: "Bac+4/5 ou plus", emoji: "🌟" }
+      { text: "Baccalauréat", emoji: "📚" },
+      { text: "Bac+2", emoji: "🎓" },
+      { text: "Licence", emoji: "🎯" },
+      { text: "Master", emoji: "🎨" },
+      { text: "Doctorat", emoji: "🌟" }
     ]
   },
   {
     id: 2,
-    text: "Quels sont vos domaines d'intérêt principaux ?",
+    text: "Quels sont vos domaines d'interets ?",
     options: [
-      { text: "Technologies et Informatique", emoji: "💻" },
-      { text: "Sciences et Ingénierie", emoji: "🔬" },
-      { text: "Business et Management", emoji: "📊" },
-      { text: "Arts et Design", emoji: "🎨" }
+      { text: "Programmation", emoji: "💻" },
+      { text: "Analyse Donnees", emoji: "🔬" },
+      { text: "Securite Informatique", emoji: "📊" },
+      { text: "Mecaniques", emoji: "🎨" },
+      { text: "Communication", emoji: "🎨" },
+      { text: "Commerce", emoji: "🎨" },
+      { text: "Gestion Projet", emoji: "🎨" },
+      { text: "Sciences Humaines", emoji: "🎨" },
     ]
   },
   {
     id: 3,
-    text: "Comment préférez-vous travailler ?",
+    text: "Quelles sont vos matières préférés ?",
     options: [
-      { text: "En autonomie", emoji: "🎯" },
-      { text: "En équipe", emoji: "👥" },
-      { text: "Mix des deux", emoji: "🔄" },
-      { text: "Leadership", emoji: "👑" }
+
+      { text: "Informatique", emoji: "🔍" },
+      { text: "Statistique", emoji: "💡" },
+      { text: "Mathematique", emoji: "🔄" },
+      { text: "Physique", emoji: "👑" },
+      { text: "Biologie", emoji: "🎯" },
+      { text: "Chimie", emoji: "🎯" },
+      { text: "Histoire", emoji: "🎯" },
+      { text: "Grammaire", emoji: "🎯" },
+      { text: "Langue", emoji: "🎯" },
+      { text: "Sociologie", emoji: "🎯" },
+      { text: "Economie", emoji: "🎯" },
     ]
   },
   {
     id: 4,
-    text: "Quelle est votre approche face aux défis ?",
+    text: "Quelles sont vos matières préférés ?",
     options: [
-      { text: "Analytique et méthodique", emoji: "🔍" },
-      { text: "Créative et intuitive", emoji: "💡" },
-      { text: "Pragmatique et orientée résultats", emoji: "🎯" },
+      { text: "Informatique", emoji: "🔍" },
+      { text: "Statistique", emoji: "💡" },
+      { text: "Mathemat", emoji: "🎯" },
       { text: "Collaborative et communicative", emoji: "🤝" }
     ]
   },
@@ -163,7 +176,7 @@ function QuestionnairePage() {
               className="w-full bg-green-900 hover:bg-green-700 text-white text-xl px-6 py-3 rounded-lg font-semibold transition-colors"
             >
               Commencer 
-     
+    
             </button>
           </form>
         </div>

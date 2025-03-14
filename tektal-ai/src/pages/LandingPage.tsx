@@ -31,7 +31,7 @@ function LandingPage() {
           </p>
           
           <button 
-            onClick={() => navigate('/questionnaire')}
+            onClick={() => navigate('/monguide')}
             className="bg-green-900 hover:bg-green-700 text-white px-8 py-4 rounded-lg 
               text-lg font-semibold flex items-center space-x-2 transition-colors"
           >
