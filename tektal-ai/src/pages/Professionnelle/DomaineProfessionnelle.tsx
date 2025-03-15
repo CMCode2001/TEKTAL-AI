@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom';
 import { Code, Stethoscope, Scale, Building2, Pencil, ArrowLeft, Trash, PartyPopper, Factory, HandHelpingIcon, Microscope } from 'lucide-react';
 
-function DomaineAcademique() {
+function DomaineProfessionnelle() {
   return (
-    <div className="min-h-screen p-8 bgCMC">
+    <div className="min-h-screen p-8 bg-slate-100">
          {/* Bouton Précédent */}
-      <Link to="/monguide-academique" className="absolute top-4 left-4 flex items-center text-white hover:text-yellow-400 transition-colors">
+      <Link to="/monguide-professionnel" className="absolute top-4 left-4 flex items-center text-black hover:text-yellow-400 transition-colors">
         <ArrowLeft className="w-6 h-6 mr-2" />
         Précédent
       </Link>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-5xl font-bold text-green-400 mb-8 text-center">
+        <h1 className="text-5xl font-bold text-pink-600 mb-8 text-center">
           Explorer les Métiers
         </h1>
 
@@ -81,4 +81,4 @@ function DomaineAcademique() {
   );
 }
 
-export default DomaineAcademique;
+export default DomaineProfessionnelle;

@@ -7,6 +7,10 @@ import AcademicOrientation from './pages/Academique/AcademicOrientation';
 import DomaineAcademique from './pages/Academique/DomaineAcademique';
 import FormulaireOrientation from './pages/Academique/FormulaireOrientation';
 import ResultatOrientation from './pages/Academique/ResultatOrientation';
+import ProfessionnelleOrientation from './pages/Professionnelle/ProfessionnelleOrientation';
+import DomaineProfessionnelle from './pages/Professionnelle/DomaineProfessionnelle';
+import FormulaireOrientationPro from './pages/Professionnelle/FormulaireOrientationPro';
+import ResultatOrientationPro from './pages/Professionnelle/ResultatOrientationPro';
 
 function App() {
   return (
@@ -21,11 +25,12 @@ function App() {
         <Route path="/academique-resultats" element={<ResultatOrientation />} />
         {/*----- FIN ACADEMIQUE ------*/}
 
-        {/*----- ACADEMIQUE ------*/}
-        <Route path="/monguide-professionnel" element={<AcademicOrientation />} />
-        <Route path="/monguide-domaine-professionnel" element={<DomaineAcademique />} />
-        <Route path="/monguide-orientation-professionnel" element={<FormulaireOrientation />} />
-        {/*----- FIN ACADEMIQUE ------*/}
+        {/*----- PROFESSIONNELLE ------*/}
+        <Route path="/monguide-professionnel" element={<ProfessionnelleOrientation />} />
+        <Route path="/monguide-domaine-professionnel" element={<DomaineProfessionnelle />} />
+        <Route path="/monguide-orientation-professionnel" element={<FormulaireOrientationPro />} />
+        <Route path="/professionnel-resultats" element={<ResultatOrientationPro />} />
+        {/*----- FIN PROFESSIONNELLE ------*/}
 
 
         <Route path="/questionnaire" element={<QuestionnairePage />} />

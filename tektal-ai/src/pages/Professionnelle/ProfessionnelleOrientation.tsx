@@ -3,8 +3,8 @@ import { Search, Compass, ArrowLeft } from 'lucide-react';
 import Logo from '../../assets/LogoTkT.png'
 function ProfessionnelleOrientation() {
   return (
-    <div className="min-h-screen p-8">
-      <Link to="/monguide-professionnel" className="absolute top-4 left-4 flex items-center text-white hover:text-yellow-400 transition-colors">
+    <div className="min-h-screen p-8  bg-slate-100">
+      <Link to="/monguide" className="absolute top-4 left-4 flex items-center  text-black hover:text-yellow-400 transition-colors">
         <ArrowLeft className="w-6 h-6 mr-2" />
         Précédent
       </Link>
@@ -20,11 +20,11 @@ function ProfessionnelleOrientation() {
         
         <div className="grid md:grid-cols-2 gap-8">
           <Link
-            to="/professional/explore"
+            to="/monguide-domaine-professionnel"
             className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
           >
             <div className="flex flex-col items-center text-center">
-              <Search className="w-12 h-12 text-blue-600 mb-4" />
+              <Search className="w-12 h-12 text-pink-600 mb-4" />
               <h2 className="text-xl font-semibold text-gray-800 mb-2">
                 Explorer les Métiers
               </h2>
@@ -35,11 +35,11 @@ function ProfessionnelleOrientation() {
           </Link>
 
           <Link
-            to="/professional/orient"
+            to="/monguide-orientation-professionnel"
             className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
           >
             <div className="flex flex-col items-center text-center">
-              <Compass className="w-12 h-12 text-indigo-600 mb-4" />
+              <Compass className="w-12 h-12 text-green-600 mb-4" />
               <h2 className="text-xl font-semibold text-gray-800 mb-2">
                 Trouver un Métier
               </h2>
@@ -50,12 +50,7 @@ function ProfessionnelleOrientation() {
           </Link>
         </div>
 
-        <Link
-          to="/"
-          className="block mt-8 text-center text-blue-600 hover:text-blue-800"
-        >
-          Retour à l'accueil
-        </Link>
+        
       </div>
     </div>
   );
