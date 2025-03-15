@@ -207,11 +207,11 @@ orientation_professionnelle(Request) :-
     maplist(atom_string, Traits, TraitsStr),
 
     % Appel de la fonction recommandation et récupération de la liste
-    recommander_domaines_pertinents(Niveau, Filiere, Competences, Traits, DomainesPertinents),
+    recommander_metiers_pertinents(Niveau, Filiere, Competences, Traits,  MetiersPertinents),
 
     % Vérifier s'il y a des résultats et renvoyer la réponse JSON
-    (DomainesPertinents \= [] ->
-        Resultat = _{domaines_suggeres: DomainesPertinents},
+    ( MetiersPertinents \= [] ->
+        Resultat = _{domaines_suggeres:  MetiersPertinents},
         atom_json_dict(ResultatStr, Resultat, []),
         save_utilisateur(NomStr, NiveauStr, FiliereStr, 'professionnelle', ResultatStr,  Competences, Traits),
         reply_json_dict(Resultat)
