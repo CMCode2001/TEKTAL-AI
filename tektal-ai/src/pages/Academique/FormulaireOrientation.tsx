@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const FormulaireUtilisateur = () => {
+const FormulaireOrientation = () => {
   const [formData, setFormData] = useState({
     nom: '',
     niveau_etude: '',
@@ -16,7 +16,35 @@ const FormulaireUtilisateur = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [step, setStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [processingMessage, setProcessingMessage] = useState('');
+  const [domaines, setDomaines] = useState<string[]>([]); // Initialisé comme un tableau vide
+  const [selectedDomaines, setSelectedDomaines] = useState<string[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch domaines from the API
+    const fetchDomaines = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/domaines');
+        if (!response.ok) throw new Error('Erreur lors de la récupération des domaines');
+
+        const data = await response.json();
+
+        // Vérifiez que la réponse contient bien un tableau `domaines`
+        if (data.domaines && Array.isArray(data.domaines)) {
+          setDomaines(data.domaines); // Utilisez data.domaine pour extraire le tableau
+        } else {
+          throw new Error("La réponse de l'API ne contient pas un tableau de domaines");
+        }
+      } catch (err) {
+        setError((err as Error).message);
+        setDomaines([]); // Assurez-vous que domaines reste un tableau vide en cas d'erreur
+      }
+    };
+
+    fetchDomaines();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -34,7 +62,11 @@ const FormulaireUtilisateur = () => {
   };
 
   const handleNext = () => {
-    setStep(step + 1);
+    if (step < 4) setStep(step + 1);
+  };
+
+  const handlePrevious = () => {
+    if (step > 1) setStep(step - 1);
   };
 
   const handleSubmit = async () => {
@@ -49,7 +81,7 @@ const FormulaireUtilisateur = () => {
           nom: formData.nom,
           niveau_etude: formData.niveau_etude,
           filiere: formData.filiere,
-          domaine_interet: formData.domaine_interet,
+          domaine_interet: selectedDomaines.join(', '), // Utilisez selectedDomaines
         }),
       });
 
@@ -73,7 +105,6 @@ const FormulaireUtilisateur = () => {
       return;
     }
 
-    // Vérification que toutes les notes sont bien renseignées
     if (Object.keys(formData.notes).length !== matRequis.length) {
       setError("Veuillez entrer une note pour chaque matière.");
       return;
@@ -81,6 +112,8 @@ const FormulaireUtilisateur = () => {
 
     setIsAnalyzing(true);
     setError(null);
+    setIsLoading(true);
+    setProcessingMessage('Votre dossier est en cours de traitement...');
 
     try {
       const requestBody = {
@@ -99,99 +132,198 @@ const FormulaireUtilisateur = () => {
       const resultats = await notesResponse.json();
       setResultatsAnalyse(resultats);
 
-      navigate('/academique-resultats', {
-        state: {
-          idUtilisateur,
-          utilisateurData: formData,
-          resultatsAnalyse: resultats,
-        },
-      });
+      setTimeout(() => {
+        navigate('/academique-resultats', {
+          state: {
+            idUtilisateur,
+            utilisateurData: formData,
+            resultatsAnalyse: resultats,
+          },
+        });
+      }, 4000);
     } catch (err) {
       setError((err as Error).message);
+      setIsLoading(false);
     } finally {
       setIsAnalyzing(false);
     }
   };
 
+  const handleDomaineClick = (domaine: string) => {
+    setSelectedDomaines((prev) =>
+      prev.includes(domaine)
+        ? prev.filter((d) => d !== domaine)
+        : [...prev, domaine]
+    );
+    setFormData((prev) => ({
+      ...prev,
+      domaine_interet: prev.domaine_interet ? `${prev.domaine_interet}, ${domaine}` : domaine,
+    }));
+  };
+
+  const getRandomColor = () => {
+    const colors = ['bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-red-500', 'bg-purple-500'];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
+
   return (
-    <div className="max-w-lg mx-auto p-4 border rounded shadow">
-      <h2 className="text-xl font-bold mb-4">Formulaire d'inscription</h2>
-      {error && <p className="text-red-500">{error}</p>}
+    <div className="flex justify-center items-center min-h-screen bgCMC">
+      <div className="w-full max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold text-center mb-6">S'orienter avec TEKTAL-Ai !</h2>
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
-      {/* Étapes du formulaire */}
-      {step === 1 && (
-        <input
-          type="text"
-          name="nom"
-          placeholder="Nom"
-          value={formData.nom}
-          onChange={handleChange}
-          className="w-full p-2 border rounded mb-2"
-        />
-      )}
-      {step === 2 && (
-        <input
-          type="text"
-          name="niveau_etude"
-          placeholder="Niveau d'étude"
-          value={formData.niveau_etude}
-          onChange={handleChange}
-          className="w-full p-2 border rounded mb-2"
-        />
-      )}
-      {step === 3 && (
-        <input
-          type="text"
-          name="filiere"
-          placeholder="Filière"
-          value={formData.filiere}
-          onChange={handleChange}
-          className="w-full p-2 border rounded mb-2"
-        />
-      )}
-      {step === 4 && (
-        <input
-          type="text"
-          name="domaine_interet"
-          placeholder="Domaine d'intérêt"
-          value={formData.domaine_interet}
-          onChange={handleChange}
-          className="w-full p-2 border rounded mb-2"
-        />
-      )}
-
-      {/* Si l'utilisateur a été enregistré, afficher les champs de notes */}
-      {idUtilisateur && matRequis.length > 0 && (
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold">Entrez vos notes :</h3>
-          {matRequis.map((subject) => (
-            <div key={subject} className="flex flex-col mb-2">
-              <label className="font-medium">{subject}</label>
-              <input
-                type="number"
-                min="0"
-                max="20"
-                value={formData.notes[subject] || ''}
-                onChange={(e) => handleGradeChange(subject, e.target.value)}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-          ))}
+        {/* Barre de progression */}
+        <div className="w-full bg-gray-200 rounded-full h-2.5 mb-6">
+          <div className="bg-yellow-400 h-2.5 rounded-full" style={{ width: `${(step / 4) * 100}%` }}></div>
         </div>
-      )}
 
-      {/* Boutons de navigation */}
-      <div className="mt-4 flex justify-between">
-        {step < 4 ? (
-          <button onClick={handleNext} className="px-4 py-2 bg-green-600 text-white rounded-md">Suivant</button>
-        ) : idUtilisateur ? (
-          <button onClick={envoyerNotes} className="px-4 py-2 bg-blue-600 text-white rounded-md">Envoyer mes notes</button>
+        {/* Étapes du formulaire */}
+        {!isLoading ? (
+          <div className="space-y-4">
+            {step === 1 && (
+              <div> 
+                <h2 className="text-xl font-semibold mb-4"> 📜 Informations Personnelles</h2>
+                <label className="block text-sm font-medium text-gray-700"> ➪ Quel est votre nom complet ?</label>
+                <input
+                  type="text"
+                  name="nom"
+                  placeholder="Entrez votre nom"
+                  value={formData.nom}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            )}
+            {step === 2 && (
+              <div>
+                <label className="block text-xl font-medium text-gray-700">➪ Quel est votre niveau d'etude ? </label>
+              <p>Baccalaureat →  <b>bac</b> <br/>
+              </p>
+                <input
+                  type="text"
+                  name="niveau_etude"
+                  placeholder="Entrez votre niveau d'étude"
+                  value={formData.niveau_etude}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            )}
+            {step === 3 && (
+              <div>
+                <label className="block text-xl font-medium text-gray-700"> 🎯 Filière
+                <p> ➪ Quelles filières avez-vous suivies ? </p>
+                </label>
+                
+                <p>Scientifique → <b>s</b> <br/> Litteraire → <b>l</b> <br/>
+                 Technique → <b>t</b>
+                 </p>
+                <input
+                  type="text"
+                  name="filiere"
+                  placeholder="Entrez votre filière"
+                  value={formData.filiere}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            )}
+            {step === 4 && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700"> 🤔 Domaine d'intérêt</label>
+                <p> ➪ Dans quels domaines d'intérêt souhaitez-vous évoluer plus tard ?</p>
+                <input
+                  type="text"
+                  name="domaine_interet"
+                  placeholder="Entrez votre domaine d'intérêt"
+                  value={formData.domaine_interet}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {domaines.map((domaine) => (
+                    <button
+                      key={domaine}
+                      onClick={() => handleDomaineClick(domaine)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium ${
+                        selectedDomaines.includes(domaine)
+                          ? `${getRandomColor()} text-white`
+                          : 'bg-gray-200 text-gray-700'
+                      }`}
+                    >
+                      {domaine}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Si l'utilisateur a été enregistré, afficher les champs de notes */}
+            {idUtilisateur && matRequis.length > 0 && (
+              <div className="mt-6">
+                <h3 className="text-lg font-semibold mb-4">Entrez vos notes :</h3>
+                {matRequis.map((subject) => (
+                  <div key={subject} className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">{subject}</label>
+                    <input
+                      type="number"
+                      min="0"
+                      max="20"
+                      value={formData.notes[subject] || ''}
+                      onChange={(e) => handleGradeChange(subject, e.target.value)}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         ) : (
-          <button onClick={handleSubmit} className="px-4 py-2 bg-green-600 text-white rounded-md">Créer mon dossier</button>
+          <div className="text-center">
+            {/* Spinner de chargement */}
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+            <p className="text-gray-700">{processingMessage}</p>
+          </div>
+        )}
+
+        {/* Boutons de navigation */}
+        {!isLoading && (
+          <div className="mt-6 flex justify-between">
+            {step > 1 && (
+              <button
+                onClick={handlePrevious}
+                className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+              >
+                👈🏿 Précédent
+              </button>
+            )}
+            {step < 4 ? (
+              <button
+                onClick={handleNext}
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+              >
+                Suivant 👉🏿
+              </button>
+            ) : idUtilisateur ? (
+              <button
+                onClick={envoyerNotes}
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+              >
+                Envoyer mes notes
+              </button>
+            ) : (
+              <button
+                onClick={handleSubmit}
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+              >
+                Envoyer 👌🏾
+              </button>
+            )}
+          </div>
         )}
       </div>
     </div>
   );
 };
 
-export default FormulaireUtilisateur;
+export default FormulaireOrientation;
