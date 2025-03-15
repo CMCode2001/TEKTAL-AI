@@ -18,7 +18,7 @@ const FormulaireOrientation = () => {
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [processingMessage, setProcessingMessage] = useState('');
-  const [domaines, setDomaines] = useState<string[]>([]);
+  const [domaines, setDomaines] = useState<string[]>([]); // Initialisé comme un tableau vide
   const [selectedDomaines, setSelectedDomaines] = useState<string[]>([]);
   const navigate = useNavigate();
 
@@ -28,10 +28,18 @@ const FormulaireOrientation = () => {
       try {
         const response = await fetch('http://localhost:8000/domaines');
         if (!response.ok) throw new Error('Erreur lors de la récupération des domaines');
+
         const data = await response.json();
-        setDomaines(data);
+
+        // Vérifiez que la réponse contient bien un tableau `domaines`
+        if (data.domaines && Array.isArray(data.domaines)) {
+          setDomaines(data.domaines); // Utilisez data.domaine pour extraire le tableau
+        } else {
+          throw new Error("La réponse de l'API ne contient pas un tableau de domaines");
+        }
       } catch (err) {
         setError((err as Error).message);
+        setDomaines([]); // Assurez-vous que domaines reste un tableau vide en cas d'erreur
       }
     };
 
@@ -73,7 +81,7 @@ const FormulaireOrientation = () => {
           nom: formData.nom,
           niveau_etude: formData.niveau_etude,
           filiere: formData.filiere,
-          domaine_interet: selectedDomaines.join(', '), // Use selectedDomaines
+          domaine_interet: selectedDomaines.join(', '), // Utilisez selectedDomaines
         }),
       });
 
@@ -147,6 +155,10 @@ const FormulaireOrientation = () => {
         ? prev.filter((d) => d !== domaine)
         : [...prev, domaine]
     );
+    setFormData((prev) => ({
+      ...prev,
+      domaine_interet: prev.domaine_interet ? `${prev.domaine_interet}, ${domaine}` : domaine,
+    }));
   };
 
   const getRandomColor = () => {
@@ -220,6 +232,14 @@ const FormulaireOrientation = () => {
               <div>
                 <label className="block text-sm font-medium text-gray-700"> 🤔 Domaine d'intérêt</label>
                 <p> ➪ Dans quels domaines d'intérêt souhaitez-vous évoluer plus tard ?</p>
+                <input
+                  type="text"
+                  name="domaine_interet"
+                  placeholder="Entrez votre domaine d'intérêt"
+                  value={formData.domaine_interet}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
                 <div className="flex flex-wrap gap-2 mt-2">
                   {domaines.map((domaine) => (
                     <button
