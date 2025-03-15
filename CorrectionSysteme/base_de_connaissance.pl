@@ -1,4 +1,4 @@
-% Correspondance entre filière et domaines autorisés
+% Correspondance entre filiere et domaines autorises
 correspondance_filiere_domaine(bac, s, informatique).
 correspondance_filiere_domaine(bac, s, mecanique).
 correspondance_filiere_domaine(bac, s, medecine).
@@ -42,9 +42,10 @@ correspondance_filiere_domaine(master, psychologie, psychologie_clinique).
 correspondance_filiere_domaine(master, sociologie, sociologie_urbaine).
 
 
-% Exemples de matières requises
+% Exemples de matieres requises
 matiere_requise(informatique, bac, s, [math, physique, informatique]).
 matiere_requise(mecanique, bac, s, [math, physique, technologie]).
+matiere_requise(mecanique, bac, t, [math, physique, techniques]).
 matiere_requise(medecine, bac, s, [svt, chimie, physique]).
 matiere_requise(droit, bac, l, [philosophie, histoire, economie]).
 matiere_requise(gestion, bac, l, [math, economie, gestion]).
@@ -54,31 +55,31 @@ matiere_requise(sociologie, bac, l, [philosophie, histoire, economie]).
 matiere_requise(biologie, bac, s, [svt, chimie, physique]).
 matiere_requise(chimie, bac, s, [chimie, physique, math]).
 
-% Établissements
+% etablissements
 etablissement(informatique, ["UCAD", "ESP", "Sup'Info", "Polytech", "ENSI"]).
 etablissement(mecanique, ["CFPT", "EPT", "IUT", "ENSAM", "ISAE"]).
-etablissement(droit, ["Faculté de Droit UCAD", "ISM", "Sup'Déco", "Université Paris 1", "Université de Genève"]).
+etablissement(droit, ["Faculte de Droit UCAD", "ISM", "Sup'Deco", "Universite Paris 1", "Universite de Geneve"]).
 etablissement(gestion, ["SupGestion", "BEM Dakar", "ISM", "HEC Paris", "ESSEC"]).
-etablissement(medecine, ["Faculté de Médecine UCAD", "UFR Santé", "Université de Montpellier", "Université de Genève"]).
+etablissement(medecine, ["Faculte de Medecine UCAD", "UFR Sante", "Universite de Montpellier", "Universite de Geneve"]).
 etablissement(electricite, ["ESP", "IUT", "ESEBAT", "ENSEA", "INP Toulouse"]).
-etablissement(psychologie, ["Université de Paris", "Université de Genève", "Université de Montréal", "Université de Lausanne"]).
-etablissement(sociologie, ["Université de Paris", "Université de Genève", "Université de Montréal", "Université de Lausanne"]).
-etablissement(biologie, ["Université de Montpellier", "Université de Genève", "Université de Lausanne", "Université de Paris"]).
-etablissement(chimie, ["Université de Montpellier", "Université de Genève", "Université de Lausanne", "Université de Paris"]).
+etablissement(psychologie, ["Universite de Paris", "Universite de Geneve", "Universite de Montreal", "Universite de Lausanne"]).
+etablissement(sociologie, ["Universite de Paris", "Universite de Geneve", "Universite de Montreal", "Universite de Lausanne"]).
+etablissement(biologie, ["Universite de Montpellier", "Universite de Geneve", "Universite de Lausanne", "Universite de Paris"]).
+etablissement(chimie, ["Universite de Montpellier", "Universite de Geneve", "Universite de Lausanne", "Universite de Paris"]).
 
 % Parcours de formation
-parcours(informatique, bac, ["Licence en Informatique", "BTS en Développement", "Certification en Programmation", "Master en Intelligence Artificielle", "Doctorat en Informatique"]).
-parcours(mecanique, bac, ["BTS en Mécanique", "Licence en Génie Mécanique", "Formation en Maintenance Automobile", "Master en Génie Mécanique", "Doctorat en Mécanique"]).
-parcours(medecine, bac, ["Première année Médecine", "Pharmacie", "Dentisterie", "Master en Santé Publique", "Doctorat en Médecine"]).
+parcours(informatique, bac, ["Licence en Informatique", "BTS en Developpement", "Certification en Programmation", "Master en Intelligence Artificielle", "Doctorat en Informatique"]).
+parcours(mecanique, bac, ["BTS en Mecanique", "Licence en Genie Mecanique", "Formation en Maintenance Automobile", "Master en Genie Mecanique", "Doctorat en Mecanique"]).
+parcours(medecine, bac, ["Premiere annee Medecine", "Pharmacie", "Dentisterie", "Master en Sante Publique", "Doctorat en Medecine"]).
 parcours(droit, bac, ["Licence en Droit", "Master en Droit des Affaires", "Concours Magistrature", "Doctorat en Droit", "Master en Droit International"]).
 parcours(gestion, bac, ["Licence en Gestion", "Master en Management", "Formation en Entrepreneuriat", "MBA", "Doctorat en Gestion"]).
-parcours(electricite, bac, ["BTS en Electricité", "Licence en Génie Electrique", "Certification en Systèmes Électriques", "Master en Énergie", "Doctorat en Électrotechnique"]).
+parcours(electricite, bac, ["BTS en Electricite", "Licence en Genie Electrique", "Certification en Systemes electriques", "Master en energie", "Doctorat en electrotechnique"]).
 parcours(psychologie, bac, ["Licence en Psychologie", "Master en Psychologie Clinique", "Formation en Neuropsychologie", "Doctorat en Psychologie", "Master en Psychologie Sociale"]).
-parcours(sociologie, bac, ["Licence en Sociologie", "Master en Sociologie Urbaine", "Formation en Démographie", "Doctorat en Sociologie", "Master en Sociologie Politique"]).
-parcours(biologie, bac, ["Licence en Biologie", "Master en Biologie Moléculaire", "Formation en Biotechnologie", "Doctorat en Biologie", "Master en Écologie"]).
-parcours(chimie, bac, ["Licence en Chimie", "Master en Chimie Analytique", "Formation en Chimie Organique", "Doctorat en Chimie", "Master en Chimie des Matériaux"]).
+parcours(sociologie, bac, ["Licence en Sociologie", "Master en Sociologie Urbaine", "Formation en Demographie", "Doctorat en Sociologie", "Master en Sociologie Politique"]).
+parcours(biologie, bac, ["Licence en Biologie", "Master en Biologie Moleculaire", "Formation en Biotechnologie", "Doctorat en Biologie", "Master en ecologie"]).
+parcours(chimie, bac, ["Licence en Chimie", "Master en Chimie Analytique", "Formation en Chimie Organique", "Doctorat en Chimie", "Master en Chimie des Materiaux"]).
 
-% Correspondance entre compétences techniques et domaines
+% Correspondance entre competences techniques et domaines
 competence_technique_domaine(programmation, [informatique, intelligence_artificielle, developpement_software]).
 competence_technique_domaine(reseau, [cybersecurite, telecoms, informatique]).
 competence_technique_domaine(maintenance, [mecanique, electronique, electricite]).
@@ -95,7 +96,7 @@ competence_technique_domaine(genie_logiciel, [informatique, developpement_softwa
 competence_technique_domaine(marketing_digital, [marketing, communication, gestion]).
 competence_technique_domaine(enseignement, [education, psychologie, sociologie]).
 
-% Correspondance entre critères de personnalité et domaines
+% Correspondance entre criteres de personnalite et domaines
 personnalite_domaine(organise, [gestion, droit, finance]).
 personnalite_domaine(curieux, [recherche, journalisme, informatique]).
 personnalite_domaine(rigoureux, [medecine, ingenierie, comptabilite]).
@@ -109,7 +110,7 @@ personnalite_domaine(resolu, [ingenierie, gestion, entrepreneuriat]).
 personnalite_domaine(patient, [medecine, psychologie, education]).
 personnalite_domaine(leader, [management, politique, entrepreneuriat]).
 
-% Correspondance entre domaines et métiers
+% Correspondance entre domaines et metiers
 correspondance_metier_domaine(informatique, [developpeur_software, ingenieur_reseau, data_scientist, expert_cybersecurite, architecte_logiciel, devops_engineer, scrum_master, product_owner]).
 correspondance_metier_domaine(mecanique, [ingenieur_mecanique, technicien_maintenance, concepteur_CAO, expert_robotique, ingenieur_thermique, ingenieur_fluides]).
 correspondance_metier_domaine(medecine, [medecin_generaliste, chirurgien, pharmacien, dentiste, radiologue, anesthesiste, pediatre, gynecologue]).
@@ -121,7 +122,7 @@ correspondance_metier_domaine(sociologie, [chercheur_en_sociologie, analyste_pol
 correspondance_metier_domaine(biologie, [chercheur_en_biologie, microbiologiste, geneticien, biologiste_marin, bioinformaticien, ecologiste]).
 correspondance_metier_domaine(chimie, [chimiste, formulateur, ingenieur_chimiste, expert_en_environnement, toxicologue, ingenieur_materiaux]).
 
-% Métiers accessibles en fonction du niveau d'étude
+% Metiers accessibles en fonction du niveau d'etude
 metier_par_niveau(bac_plus_2, informatique, [technicien_support, developpeur_web, administrateur_reseau, technicien_helpdesk]).
 metier_par_niveau(licence, informatique, [developpeur_software, analyste_donnees, ingenieur_systemes, testeur_logiciel]).
 metier_par_niveau(master, informatique, [data_scientist, expert_cybersecurite, architecte_logiciel, chef_de_projet_informatique]).
@@ -163,7 +164,7 @@ metier_par_niveau(licence, chimie, [technicien_superieur_chimie, assistant_chimi
 metier_par_niveau(master, chimie, [chimiste, ingenieur_chimiste, expert_en_environnement]).
 
 
-% Vérifier que l'utilisateur a au moins Bac+2 avant de recommander un métier
+% Verifier que l'utilisateur a au moins Bac+2 avant de recommander un metier
 niveau_etude_valide(bac_plus_2).   % (DUT, BTS, DEUG, etc.)
 niveau_etude_valide(licence).      % Licence (Bac+3)
 niveau_etude_valide(master).       % Master (Bac+5)
