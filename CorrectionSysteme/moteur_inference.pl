@@ -103,7 +103,31 @@ afficher_domaines([Domaine|Rest]) :-
 %     ).
 
 % Fonction principale pour recommander des domaines basés sur la fréquence d'apparition (3 fois ou plus)
-recommander_domaines_pertinents(Niveau, Filiere, CompetencesTech, Personnalites, DomainesPertinents) :-
+% recommander_domaines_pertinents(Niveau, Filiere, CompetencesTech, Personnalites, DomainesPertinents) :-
+
+%     % Trouver les domaines liés à la filière de l'utilisateur
+%     findall(DomaineFiliere, correspondance_filiere_domaine(Niveau, Filiere, DomaineFiliere), DomainesFiliere),
+
+%     % Trouver les domaines liés aux compétences techniques
+%     trouver_domaines_par_competences(CompetencesTech, DomainesCompetences),
+
+%     % Trouver les domaines liés aux critères de personnalité
+%     trouver_domaines_par_personnalite(Personnalites, DomainesPerso),
+
+%     % Fusionner toutes les sources
+%     append([DomainesFiliere, DomainesCompetences, DomainesPerso], TousDomaines),
+
+%     % Compter l'occurrence de chaque domaine
+%     compter_occurrences(TousDomaines, Comptes),
+
+%     % Filtrer uniquement les domaines qui apparaissent au moins 3 fois
+%     findall(Domaine, (member(Domaine-Occ, Comptes), Occ >= 3), DomainesPertinents).
+
+
+recommander_metiers_pertinents(Niveau, Filiere, CompetencesTech, Personnalites, MetiersPertinents) :-
+    
+    % Vérifier que l'utilisateur a au moins Bac+2
+    niveau_etude_valide(Niveau),
 
     % Trouver les domaines liés à la filière de l'utilisateur
     findall(DomaineFiliere, correspondance_filiere_domaine(Niveau, Filiere, DomaineFiliere), DomainesFiliere),
@@ -114,14 +138,23 @@ recommander_domaines_pertinents(Niveau, Filiere, CompetencesTech, Personnalites,
     % Trouver les domaines liés aux critères de personnalité
     trouver_domaines_par_personnalite(Personnalites, DomainesPerso),
 
-    % Fusionner toutes les sources
+    % Fusionner toutes les sources de domaines
     append([DomainesFiliere, DomainesCompetences, DomainesPerso], TousDomaines),
 
     % Compter l'occurrence de chaque domaine
     compter_occurrences(TousDomaines, Comptes),
 
-    % Filtrer uniquement les domaines qui apparaissent au moins 3 fois
-    findall(Domaine, (member(Domaine-Occ, Comptes), Occ >= 3), DomainesPertinents).
+    % Sélectionner les domaines les plus pertinents (ceux qui apparaissent au moins 3 fois)
+    findall(Domaine, (member(Domaine-Occ, Comptes), Occ >= 2), DomainesPertinents),
+
+    % Trouver les métiers correspondant aux domaines et au niveau d'étude
+    trouver_metiers_par_domaines_et_niveau(DomainesPertinents, Niveau, MetiersPertinents).
+
+% Trouver les métiers en fonction des domaines et du niveau d'étude
+trouver_metiers_par_domaines_et_niveau(Domaines, Niveau, Metiers) :-
+    findall(Metier, (member(Domaine, Domaines), metier_par_niveau(Niveau, Domaine, ListeMetiers), member(Metier, ListeMetiers)), ListeMetiersBrut),
+    sort(ListeMetiersBrut, Metiers). % Supprime les doublons
+
 
 
 % Trouver les domaines correspondant aux compétences techniques

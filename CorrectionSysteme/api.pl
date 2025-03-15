@@ -181,14 +181,21 @@ traiter_notes_utilisateur(Request) :-
         )
     ;
         % Si les notes ne sont pas suffisantes
+        atom_concat("Desole, vous ne remplissez pas les conditions pour le domaine ", Domaine, Message),
         ResultatEchec = _{
-            message: "Désolé, vous ne remplissez pas les conditions pour " + Domaine
+            message: Message,
+            matieres_requises: Matieres
         },
-        atom_json_dict(ResultatJSONEchec, ResultatEchec, []),
+        atom_json_dict(ResultatEchecStr, ResultatEchec, []),
 
-        % Mettre à jour le champ `resultat`
-        format(atom(RequeteEchec), "UPDATE utilisateurs SET resultat='~w' WHERE id=~w", [ResultatJSONEchec, ID]),
-        odbc_query(expert_db, RequeteEchec, affected(_)),
+            % Mettre à jour le résultat en JSON
+            connect_db,
+            odbc_prepare(expert_db, 
+                         'UPDATE utilisateurs SET resultat = ? WHERE id = ?', 
+                         [varchar, integer], 
+                         Statement),
+            odbc_execute(Statement, [ResultatEchecStr, ID]),
+            odbc_free_statement(Statement),
 
         reply_json_dict(ResultatEchec)
     ).
@@ -209,11 +216,11 @@ orientation_professionnelle(Request) :-
     maplist(atom_string, Traits, TraitsStr),
 
     % Appel de la fonction recommandation et récupération de la liste
-    recommander_domaines_pertinents(Niveau, Filiere, Competences, Traits, DomainesPertinents),
+    recommander_metiers_pertinents(Niveau, Filiere, Competences, Traits,  MetiersPertinents),
 
     % Vérifier s'il y a des résultats et renvoyer la réponse JSON
-    (DomainesPertinents \= [] ->
-        Resultat = _{domaines_suggeres: DomainesPertinents},
+    ( MetiersPertinents \= [] ->
+        Resultat = _{domaines_suggeres:  MetiersPertinents},
         atom_json_dict(ResultatStr, Resultat, []),
         save_utilisateur(NomStr, NiveauStr, FiliereStr, 'professionnelle', ResultatStr,  Competences, Traits),
         reply_json_dict(Resultat)
