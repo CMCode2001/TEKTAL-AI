@@ -1,3 +1,4 @@
+
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_json)).
@@ -88,7 +89,8 @@ ajouter_utilisateur(Request) :-
     % Répondre avec les matières requises
     reply_json_dict(_{
         message: "Veuillez fournir vos notes pour ces matières.",
-        id_utilisateur: ID
+        id_utilisateur: ID,
+        resultat: Matieres
     }).
 
 
