@@ -45,6 +45,7 @@ correspondance_filiere_domaine(master, sociologie, sociologie_urbaine).
 % Exemples de matières requises
 matiere_requise(informatique, bac, s, [math, physique, informatique]).
 matiere_requise(mecanique, bac, s, [math, physique, technologie]).
+matiere_requise(mecanique, bac, t, [math, physique, technologie]).
 matiere_requise(medecine, bac, s, [svt, chimie, physique]).
 matiere_requise(droit, bac, l, [philosophie, histoire, economie]).
 matiere_requise(gestion, bac, l, [math, economie, gestion]).
